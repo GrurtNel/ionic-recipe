@@ -1,0 +1,35 @@
+<!--
+  Generated template for the ShoppingListPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Shopping List</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <form #f="ngForm">
+    <ion-list>
+      <ion-item>
+        <ion-label fixed>Name</ion-label>
+        <ion-input placeholder="Milk" type="text" name="ingredientName" ngModel required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label fixed>Amount</ion-label>
+        <ion-input placeholder="2" type="number" name="amount" ngModel required></ion-input>
+      </ion-item>
+    </ion-list>
+    <button ion-button (click)="onAddItem(f)" block [disabled]="!f.valid">Add Item</button>
+  </form>
+  <ion-list>
+    <ion-item *ngFor="let item of listItems;let i = index" (click)="onCheckItem(index)">
+      <h3>{{item.name}} ({{item.amount}})</h3>
+    </ion-item>
+  </ion-list>
+</ion-content>
