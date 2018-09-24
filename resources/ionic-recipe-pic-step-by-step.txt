@@ -1,0 +1,116 @@
+﻿1) ionic start recipe-app blank
+2) Tao cac page
++) ionic generate page tabs
++) ionic generate page shopping-list
++) ionic generate page recipes
++) ionic generate page recipe
++) ionic generate page edit-recipe
+3) Implementing a Tabs Navigation (lazy loading)
++) Sửa (pages/tabs/tabs.html)
+<ion-tabs>
+  <ion-tab tabIcon="list-box" [root]="slPage" tabTitle="Shopping List"></ion-tab>
+  <ion-tab tabIcon="book" [root]="recipesPage" tabTitle="Recipes"></ion-tab>
+</ion-tabs>
++) Sửa (pages/tabs/tabs.ts)
+@NgModule({
+  declarations: [
+    TabsPage,
+  ],
+  imports: [
+    IonicPageModule.forChild(TabsPage),
+  ],
+  exports:[
+    TabsPage
+  ]
+})
++) Sửa app.component.ts
+export class MyApp {
+  rootPage = 'TabsPage';
+  
+4) Sửa app theme
+ sửa theme/variables.scss
+	$colors: (
+	  primary:    #bc7e40,
+	  secondary:  #7ad61d,
+	 
+	);
+5) Creating a Form Template (for Template-Driven Approach) - ShoppingListPage
+<form #f="ngForm" (submit)="onAddItem(f)">
+    <ion-list>
+      <ion-item>
+        <ion-label fixed>Name</ion-label>
+        <ion-input placeholder="Milk" type="text" name="ingredientName" ngModel required></ion-input>
+      </ion-item>
+      <ion-item>
+          <ion-label fixed>Amount</ion-label>
+          <ion-input placeholder="2" type="number" name="amount" ngModel required></ion-input>
+        </ion-item>
+    </ion-list>
+    <button ion-button type="submit" block [disabled]="!f.valid">Add Item</button>
+  </form>
+ 6) Them icon add vao navbar recipes page
+<ion-header>
+  <ion-navbar>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="onAddRecipe()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Recipes</ion-title>
+  </ion-navbar>
+</ion-header>
+
+6)Reactive form - add recipe
++) html
+<form [formGroup]="recipeForm" #f="ngForm">
+    <ion-list>
+      <ion-item>
+        <ion-label floating>Title</ion-label>
+        <ion-input type="text" formControlName="title"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Description</ion-label>
+        <ion-textarea formControlName="description"></ion-textarea>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Difficulty</ion-label>
+        <ion-select formControlName="difficulty">
+          <ion-option [value]="option" *ngFor="let option of selectOptions" >
+            {{option}}
+          </ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+    <button ion-button block [disabled]="!f.valid">{{mode}} Recipe</button>
+  </form>
+ +) page
+ private initialForm() {
+    this.recipeForm = new FormGroup({
+      'title': new FormControl(null, Validators.required),
+      'description': new FormControl(null, Validators.required),
+      'difficulty': new FormControl('Medium', Validators.required)
+    })
+  }
+ 7)Action sheet add recipe
+ +) html
+ <button ion-button clear block (click)="onManageIngredients()">Manage Ingredients</button>
+ +) page 
+ const actionSheet = this.actionsheetCtrl.create({
+      title: 'What do you want to do?',
+      buttons: [
+        {
+          text: 'Add Ingredient', handler: () => {
+
+          }
+        },
+        {
+          text: 'Remove All Ingredient', handler: () => {
+
+          }
+        },
+        {
+          text: 'Cancel', role:'cancel'
+        }
+      ]
+    })
+    actionSheet.present()
