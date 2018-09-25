@@ -1,3 +1,4 @@
+import { RecipeService } from './../services/recipe.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
@@ -23,6 +24,7 @@ import { ShoppingListService } from '../services/shopping-list.service';
     StatusBar,
     SplashScreen,
     ShoppingListService,
+    RecipeService,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
 })

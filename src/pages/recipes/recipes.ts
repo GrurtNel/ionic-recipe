@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Recipe } from './../../models/recipe.model';
+import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { EditRecipePage } from '../edit-recipe/edit-recipe';
+import { RecipeService } from '../../services/recipe.service';
 
 /**
  * Generated class for the RecipesPage page.
@@ -14,16 +16,39 @@ import { EditRecipePage } from '../edit-recipe/edit-recipe';
   selector: 'page-recipes',
   templateUrl: 'recipes.html',
 })
-export class RecipesPage {
+export class RecipesPage  {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  recipes: Recipe[] = []
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    private recipeService: RecipeService
+  ) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad RecipesPage');
+  }
+
+  ionViewWillEnter() {
+    this.loadRecipes()
+    console.log('ionViewWillEnter ', this.recipes);    
+  }
+  
+
+  onLoadRecipe(i: number, recipe: Recipe) {
+    this.navCtrl.push('RecipePage', { recipe: recipe, index: i })
   }
 
   onAddRecipe() {
     this.navCtrl.push('EditRecipePage', { mode: 'New' })
+  }
+
+  onViewWillLoad() {
+    this.loadRecipes()
+  }
+
+  loadRecipes() {
+    this.recipes = this.recipeService.getRecipes()
+
   }
 }
